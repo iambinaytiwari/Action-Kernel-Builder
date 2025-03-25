@@ -48,7 +48,7 @@ PATH="${WORK}/clang/bin:${WORK}/x64/bin:${WORK}/x32/bin:/bin"
 cd "${KERNEL_SRC}" || exit 1
 
 # KernelSU - Disable if not building one.
-curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
+curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -
 
 # Start Compiling Kernel
 make_fun "${KERNEL_DEFCONFIG}"
