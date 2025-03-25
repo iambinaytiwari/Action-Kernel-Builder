@@ -3,9 +3,9 @@
 set -e -x
 
 # Kernel Source
-KERNEL_SOURCE="https://github.com/iambinaytiwari/android_kernel_xiaomi_surya"
-KERNEL_BRANCH="15.0"
-KERNEL_DEFCONFIG="surya_defconfig"
+KERNEL_SOURCE="https://github.com/iambinaytiwari/kernel_xiaomi_vayu"
+KERNEL_BRANCH="14-derp"
+KERNEL_DEFCONFIG="vayu_defconfig"
 
 # Prebuilt Clang Toolchain (AOSP)
 CLANG_URL="https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master-kernel-build-2021/clang-r416183b.tar.gz"
