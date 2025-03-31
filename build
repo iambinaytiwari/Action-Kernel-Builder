@@ -47,9 +47,26 @@ PATH="${WORK}/clang/bin:${WORK}/x64/bin:${WORK}/x32/bin:/bin"
 # Enter Kernel root directory
 cd "${KERNEL_SRC}" || exit 1
 
-# KernelSU - Disable if not building one.
+# KernelSU
+git config --global user.email "binaytiwari6@gmail.com"
+git config --global user.name "iambinaytiwari"
+curl https://gist.githubusercontent.com/bagaskara815/5aeb07f0d9031189871ffa362591b20f/raw/ksu.patch >> ksu.patch
+git am ksu.patch
 curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -
+
+START=$(date +"%s")
+
+disable_lto() {
+  scripts/config --file out/.config -e CONFIG_THINLTO
+}
+
+enable_dtbo() {
+  scripts/config --file out/.config -e CONFIG_BUILD_ARM64_DTBO_IMG
 
 # Start Compiling Kernel
 make_fun "${KERNEL_DEFCONFIG}"
+if [[ -z ${DISABLE_LTO} ]]; then
+  disable_lto
+fi
+enable_dtbo
 make_fun -j"$(nproc --all)" 2>&1 | tee build.log 
