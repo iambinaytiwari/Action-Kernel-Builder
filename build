@@ -3,7 +3,7 @@
 set -e -x
 
 # Kernel Source
-KERNEL_SOURCE="https://github.com/iambinaytiwari/android_kernel_xiaomi_camellia"
+KERNEL_SOURCE="https://github.com/donvito007/kernel_xiaomi_camellia"
 KERNEL_BRANCH="main"
 KERNEL_DEFCONFIG="camellia_defconfig"
 
