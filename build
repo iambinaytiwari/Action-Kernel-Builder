@@ -4,7 +4,7 @@ set -e -x
 
 # Kernel Source
 KERNEL_SOURCE="https://github.com/iambinaytiwari/kernel_xiaomi_camellia"
-KERNEL_BRANCH="camellia-r-oss"
+KERNEL_BRANCH="oss"
 KERNEL_DEFCONFIG="camellia_defconfig"
 
 # Prebuilt Clang Toolchain (AOSP)
