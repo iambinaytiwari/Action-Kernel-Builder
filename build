@@ -5,7 +5,7 @@ set -e -x
 # Kernel Source
 KERNEL_SOURCE="https://github.com/iambinaytiwari/kernel_xiaomi_vayu"
 KERNEL_BRANCH="fifteen"
-KERNEL_DEFCONFIG="vayu_defconfig"
+KERNEL_DEFCONFIG="vayu_user_defconfig"
 
 # Prebuilt Clang Toolchain (AOSP)
 CLANG_URL="https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master-kernel-build-2021/clang-r416183b.tar.gz"
