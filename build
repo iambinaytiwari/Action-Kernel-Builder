@@ -3,9 +3,9 @@
 set -e -x
 
 # Kernel Source
-KERNEL_SOURCE="https://github.com/iambinaytiwari/android_kernel_xiaomi_camellia"
-KERNEL_BRANCH="main"
-KERNEL_DEFCONFIG="camellia_defconfig"
+KERNEL_SOURCE="https://github.com/iambinaytiwari/android_kernel_samsung_sm7150"
+KERNEL_BRANCH="fifteen"
+KERNEL_DEFCONFIG="sdmmagpie_defconfig"
 
 # Prebuilt Clang Toolchain (AOSP)
 CLANG_URL="https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master-kernel-build-2021/clang-r416183b.tar.gz"
@@ -46,6 +46,10 @@ PATH="${WORK}/clang/bin:${WORK}/x64/bin:${WORK}/x32/bin:/bin"
 
 # Enter Kernel root directory
 cd "${KERNEL_SRC}" || exit 1
+
+# KernelSU - Disable if not building one.
+# curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
 
 # Start Compiling Kernel
 make_fun "${KERNEL_DEFCONFIG}"
