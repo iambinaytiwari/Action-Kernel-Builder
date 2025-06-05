@@ -1,6 +1,6 @@
 name: Build Kernel
 
-on: 
+on:
   workflow_dispatch:
     inputs:
       DEVICE_NAME:
@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
     - name: Checkout
       uses: actions/checkout@main
@@ -54,6 +54,7 @@ jobs:
       with:
         artifacts: |
           /home/runner/work/myKernel/out/arch/arm64/boot/*.zip
+          /home/runner/work/myKernel/out/arch/arm64/boot/dts/qcom/sdmmagpie.dtb
           /home/runner/work/myKernel/build.log
         name: Compiled Kernel for ${{ github.event.inputs.DEVICE_NAME }} - ${{ steps.props.outputs.date }}
         draft: false

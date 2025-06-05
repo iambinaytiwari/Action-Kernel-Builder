@@ -3,9 +3,9 @@
 set -e -x
 
 # Kernel Source
-KERNEL_SOURCE="https://github.com/carlodandan/android_kernel_realme_sm7125"
-KERNEL_BRANCH="A13"
-KERNEL_DEFCONFIG="vendor/atoll-perf_defconfig"
+KERNEL_SOURCE="https://github.com/iambinaytiwari/kernel_samsung_m51"
+KERNEL_BRANCH="lineage-21"
+KERNEL_DEFCONFIG="m51_defconfig"
 
 # Prebuilt Clang Toolchain (AOSP)
 CLANG_URL="https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master-kernel-build-2021/clang-r416183b.tar.gz"
