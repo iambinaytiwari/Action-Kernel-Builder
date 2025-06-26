@@ -1,0 +1,62 @@
+name: kernel
+
+on:
+  workflow_dispatch:
+    inputs:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Packages
+      run: |
+        sudo apt update -y
+        sudo apt install bc cpio flex bison aptitude git python-is-python3 tar perl wget curl lz4 -y
+        sudo apt install libssl-dev -y
+
+    - name: Start Building Kernel
+      run: |
+        export KBUILD_BUILD_USER="${{ github.actor }}"
+        export KBUILD_BUILD_HOST="build_host"
+        chmod +x build.sh
+        bash build.sh
+
+    - name: Set Properties
+      id: props
+      run: |
+        echo "date=$(TZ=Asia/Manila date +%Y%m%d-%I%M%p)" >> $GITHUB_OUTPUT
+
+    - name: Compressed as Archive
+      run: |
+        git clone --depth=1 https://github.com/iambinaytiwari/AnyKernel3 -b master AnyKernel3 && rm -rf AnyKernel3/.git AnyKernel3/.github AnyKernel3/LICENSE AnyKernel3/README.md
+        cp /home/runner/work/myKernel/out/arch/arm64/boot/Image.gz AnyKernel3/Image.gz
+        cp /home/runner/work/myKernel/out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
+        if [ -f /home/runner/work/myKernel/out/arch/arm64/boot/dts/qcom/sdmmagpie.dtb ]; then
+           cp /home/runner/work/myKernel/out/arch/arm64/boot/dts/qcom/sdmmagpie.dtb AnyKernel3/dtb
+        fi
+        cd AnyKernel3
+        zip -r9 NoNameKernel-2.0-"$(/bin/date -u '+%Y%m%d-%H%M')".zip .
+
+    - name: Release
+      uses: ncipollo/release-action@v1.12.0
+      with:
+        artifacts: |
+          AnyKernel3/*.zip
+          /home/runner/work/myKernel/out/arch/arm64/boot/Image.gz-dtb
+          /home/runner/work/myKernel/out/arch/arm64/boot/dtbo.img
+          /home/runner/work/myKernel/out/arch/arm64/boot/dts/qcom/sdmmagpie.dtb
+          /home/runner/work/myKernel/build.log
+        name: NoNameKernel-2.0 for M51 - ${{ steps.props.outputs.date }}
+        draft: false
+        prerelease: false
+        tag: ${{ github.run_id }}-${{ steps.props.outputs.date }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        body: |
+          ## Notes
+            - Include building logs.
