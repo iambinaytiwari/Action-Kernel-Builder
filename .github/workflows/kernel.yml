@@ -1,29 +1,30 @@
-name: kernel
+name: Build Kernel
 
 on:
+  watch:
+    types: [started]
+
   workflow_dispatch:
-    inputs:
 
 permissions:
   contents: write
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    name: Build Kernel by ${{ github.actor }}
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
     steps:
     - name: Checkout
       uses: actions/checkout@main
 
-    - name: Packages
+    - name: Build Environment
       run: |
-        sudo apt update -y
-        sudo apt install bc cpio flex bison aptitude git python-is-python3 tar perl wget curl lz4 -y
-        sudo apt install libssl-dev -y
+        sudo apt-get update
+        sudo apt-get install git ccache automake flex lzop bison gperf build-essential zip curl zlib1g-dev g++-multilib libxml2-utils bzip2 libbz2-dev libbz2-1.0 libghc-bzlib-dev squashfs-tools pngcrush schedtool dpkg-dev liblz4-tool make optipng maven libssl-dev pwgen libswitch-perl policycoreutils minicom libxml-sax-base-perl libxml-simple-perl bc libc6-dev-i386 lib32ncurses6 libx11-dev lib32z-dev libgl1-mesa-dev xsltproc unzip device-tree-compiler python3
 
-    - name: Start Building Kernel
+    - name: Compile Kernel
       run: |
-        export KBUILD_BUILD_USER="${{ github.actor }}"
-        export KBUILD_BUILD_HOST="build_host"
         chmod +x build.sh
         bash build.sh
 
@@ -32,31 +33,31 @@ jobs:
       run: |
         echo "date=$(TZ=Asia/Manila date +%Y%m%d-%I%M%p)" >> $GITHUB_OUTPUT
 
-    - name: Compressed as Archive
+    - name: Compress Kernel
       run: |
-        git clone --depth=1 https://github.com/iambinaytiwari/AnyKernel3 -b master AnyKernel3 && rm -rf AnyKernel3/.git AnyKernel3/.github AnyKernel3/LICENSE AnyKernel3/README.md
-        cp /home/runner/work/myKernel/out/arch/arm64/boot/Image.gz AnyKernel3/Image.gz
-        cp /home/runner/work/myKernel/out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
-        if [ -f /home/runner/work/myKernel/out/arch/arm64/boot/dts/qcom/sdmmagpie.dtb ]; then
-           cp /home/runner/work/myKernel/out/arch/arm64/boot/dts/qcom/sdmmagpie.dtb AnyKernel3/dtb
+        git clone --depth=1 https://github.com/iambinaytiwari/AnyKernel3 -b master AnyKernel3 && rm -rf AnyKernel3/.git AnyKernel3/LICENSE AnyKernel3/README.md
+        cp /home/runner/work/android-kernel/out/arch/arm64/boot/Image.gz AnyKernel3/Image.gz
+        if [ -f /home/runner/work/android-kernel/out/arch/arm64/boot/dts/qcom/sdmmagpie.dtb ]; then
+           cp /home/runner/work/android-kernel/out/arch/arm64/boot/dts/qcom/sdmmagpie.dtb AnyKernel3/dtb
         fi
         cd AnyKernel3
-        zip -r9 NoNameKernel-2.0-"$(/bin/date -u '+%Y%m%d-%H%M')".zip .
+        zip -r9 AIOKernel_v1-"$(/bin/date -u '+%Y%m%d-%H%M')".zip .
 
     - name: Release
       uses: ncipollo/release-action@v1.12.0
       with:
         artifacts: |
           AnyKernel3/*.zip
-          /home/runner/work/myKernel/out/arch/arm64/boot/Image.gz-dtb
-          /home/runner/work/myKernel/out/arch/arm64/boot/dtbo.img
-          /home/runner/work/myKernel/out/arch/arm64/boot/dts/qcom/sdmmagpie.dtb
-          /home/runner/work/myKernel/build.log
-        name: NoNameKernel-2.0 for M51 - ${{ steps.props.outputs.date }}
+          /home/runner/work/android-kernel/out/arch/arm64/boot/Image.gz-dtb
+          /home/runner/work/android-kernel/out/arch/arm64/boot/dtbo.img
+          /home/runner/work/android-kernel/build.log
+        name: Compiled Kernel // ${{ steps.props.outputs.date }}
         draft: false
         prerelease: false
         tag: ${{ github.run_id }}-${{ steps.props.outputs.date }}
         token: ${{ secrets.GITHUB_TOKEN }}
         body: |
-          ## Notes
-            - Include building logs.
+         ### Notes
+          * Include building logs.
+          * Test at your own risk.
+          * Use kernel flasher or any custom recoveries to flash the compressed kernel zip file.
