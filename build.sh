@@ -4,7 +4,7 @@ set -e -x
 
 # Kernel Source
 KERNEL_SOURCE=https://github.com/iambinaytiwari/android_kernel_samsung_m51.git
-KERNEL_BRANCH=lineage-21
+KERNEL_BRANCH=15.0
 KERNEL_DEFCONFIG=m51_defconfig
 
 # Prebuilt Clang Toolchain (AOSP)
