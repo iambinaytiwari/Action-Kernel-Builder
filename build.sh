@@ -54,6 +54,10 @@ export KBUILD_BUILD_HOST="${KERNEL}"
 export KBUILD_BUILD_USER="iambinaytiwari"
 
 # Install KernelSu-Next
+git config --global user.email "binaytiwari6@gmail.com"
+git config --global user.name "iambinaytiwari"
+curl https://gist.githubusercontent.com/bagaskara815/5aeb07f0d9031189871ffa362591b20f/raw/ksu.patch >> ksu.patch
+git am ksu.patch
 curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -
 
 # Start Compiling Kernel
