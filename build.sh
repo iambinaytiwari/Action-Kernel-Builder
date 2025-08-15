@@ -4,7 +4,7 @@ set -e -x
 
 # Kernel Source
 KERNEL_SOURCE=https://github.com/bagaskara815/kernel_xiaomi_vayu
-KERNEL_BRANCH=16-derp
+KERNEL_BRANCH=lineage-22.2
 KERNEL_DEFCONFIG=vayu_defconfig
 
 # Prebuilt Clang Toolchain (AOSP)
@@ -56,9 +56,9 @@ export KBUILD_BUILD_USER="iambinaytiwari"
 # Install KernelSu-Next
 git config --global user.email "binaytiwari6@gmail.com"
 git config --global user.name "iambinaytiwari"
-curl https://gist.githubusercontent.com/bagaskara815/5aeb07f0d9031189871ffa362591b20f/raw/ksu.patch >> ksu.patch
-git am ksu.patch
-curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -
+curl https://gist.githubusercontent.com/bagaskara815/c07442bd636c756c7777e5b4b71e682a/raw/ksusfs.sh >> ksusfs.patch
+git am ksusfs.patch
+curl -LSs "https://raw.githubusercontent.com/Bagaskara815/KernelSU-Next/next/kernel/setup.sh" | bash -s next-susfs
 
 # Start Compiling Kernel
 make_fun "${KERNEL_DEFCONFIG}"
