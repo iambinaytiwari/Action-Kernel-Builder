@@ -3,9 +3,9 @@
 set -e -x
 
 # Kernel Source
-KERNEL_SOURCE=https://github.com/bagaskara815/kernel_xiaomi_vayu
-KERNEL_BRANCH=lineage-22.2
-KERNEL_DEFCONFIG=vayu_defconfig
+KERNEL_SOURCE=https://github.com/alternoegraha/kernel_xiaomi_sm6225
+KERNEL_BRANCH=r3
+KERNEL_DEFCONFIG=vendor/fog-perf_defconfig
 
 # Prebuilt Clang Toolchain (AOSP)
 CLANG_URL=https://android.googlesource.com/platform//prebuilts/clang/host/linux-x86/+archive/4c6fbc28d3b078a5308894fc175f962bb26a5718/clang-r383902b1.tar.gz
@@ -18,7 +18,7 @@ GCC_BRANCH=master-kernel-build-2021
 # Setup make Command
 make_fun() {
   make O=out ARCH=arm64 \
-       CC=clang HOSTCC=clang LLVM=1 \
+       CC=clang \
        CLANG_TRIPLE=aarch64-linux-gnu- \
        CROSS_COMPILE=aarch64-linux-android- \
        CROSS_COMPILE_COMPAT=arm-linux-androideabi- "$@"
@@ -54,10 +54,6 @@ export KBUILD_BUILD_HOST="${KERNEL}"
 export KBUILD_BUILD_USER="iambinaytiwari"
 
 # Install KernelSu-Next
-git config --global user.email "binaytiwari6@gmail.com"
-git config --global user.name "iambinaytiwari"
-curl https://gist.githubusercontent.com/bagaskara815/c07442bd636c756c7777e5b4b71e682a/raw/ksusfs.sh >> ksusfs.patch
-git am ksusfs.patch
 curl -LSs "https://raw.githubusercontent.com/Bagaskara815/KernelSU-Next/next/kernel/setup.sh" | bash -s next-susfs
 
 # Start Compiling Kernel
