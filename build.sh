@@ -3,7 +3,7 @@
 set -e -x
 
 # Kernel Source
-KERNEL_SOURCE=https://github.com/bagaskara815/kernel_xiaomi_vayu
+KERNEL_SOURCE=https://github.com/iambinaytiwari/kernel_xiaomi_vayu
 KERNEL_BRANCH=lineage-22.2
 KERNEL_DEFCONFIG=vayu_defconfig
 
